@@ -5,6 +5,8 @@
 
 -----
 
+Python package for archived datasets, tools and helpers for [São Paulo Open Government APIs](https://apilib.prefeitura.sp.gov.br/store/).
+
 **Table of Contents**
 
 - [Installation](#installation)
