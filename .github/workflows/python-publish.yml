@@ -1,13 +1,13 @@
 name: Comprehensive Publish
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  workflow_dispatch:
+  # release:
+  #   types: [released]
 
 jobs:
   build:
+    environment: release
     runs-on: ubuntu-latest
     strategy:
       matrix:
