@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   # release:
   #   types: [released]
-
+permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
 jobs:
   build:
     environment: release
