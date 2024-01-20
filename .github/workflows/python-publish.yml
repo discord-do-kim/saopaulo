@@ -1,36 +1,36 @@
-name: Comprehensive Publish
+name: Publish to PyPI
 
 on:
   workflow_dispatch:
   # release:
-  #   types: [released]
+  #   types: [published]
+
 permissions:
-      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+  contents: read
+
 jobs:
-  build:
-    environment: release
+  deploy:
+
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+
+    environment: release
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Set up pip cache
-        if: runner.os == 'Linux'
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
-          restore-keys: ${{ runner.os }}-pip-
-      - name: Install Hatch
-        run: pipx install hatch
-      # - name: Run tests
-      #   run: hatch run test:test
-      - name: Build dist
-        run: hatch build
-      - name: Publish on PyPI
-        if: github.ref == 'refs/heads/main'
-        run: hatch publish
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip 
+        pip install hatch
+    - name: Build package
+      run: hatch build
+    - name: Test package
+      run: hatch run test
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
